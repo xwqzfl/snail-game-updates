@@ -1,0 +1,15 @@
+SNAIL-PLAYER-UPDATE-1
+com.qiqi.supersnail.offline.selfrepair
+1
+1
+c6adf6bfdb6d33e4cc99bc21cb6c871c05d65e4695df5177925d797ddf24c47b
+3046022100d99fa0d5e7109c4c13bb422655b941448ed597f6c99b8c29405c7c61b03b96f6022100863fa60f6000896c5e52e40a7d8f1473878e8b997af1bd4ceadf8b9cd63d2eaf
+-- Keep the game list usable while the new installation control is rebuilt.
+local initItem = original("game.ui.form.computer.UIComputerGameList", "initItem")
+replace("game.ui.form.computer.UIComputerGameList", "initItem", function(...)
+    local ok, result = pcall(initItem, ...)
+    if ok then return result end
+    if type(result) ~= "string" or not string.find(result, "BUTTON_STYLE", 1, true) then
+        error(result, 0)
+    end
+end)

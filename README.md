@@ -1,6 +1,6 @@
 # 单机游戏补丁发布
 
-把要热更新的 Lua 函数放在仓库根目录的 `snail-patch.lua`，提交到 `main`。Windows 更新程序会读取该分支最新提交，等待模拟器中的游戏处于可更新状态后应用。更新脚本每隔约一分钟检查一次。游戏内局面繁忙时，应用时间可能推后。
+把要热更新的 Lua 函数放在维护工作区的 `GameUpdates/snail-patch.lua`，验证后运行 `./GameUpdates/publish-player.ps1`。发布命令用维护机的更新签名密钥把 Lua 和签名发布文件提交到 `main`。玩家安装支持自动更新的自修复版 APK 后，联网打开游戏即可检查更新。游戏进程运行期间约每分钟检查一次，遇到正在结算等情况会等到可以安全应用时再更新。
 
 每次提交提供一套完整的函数替换。用 `original(模块, 方法)` 调用启动时已安装的版本，用 `replace(模块, 方法, 函数)` 登记替换。移除某项替换后，该方法会恢复为启动时的实现。
 
@@ -13,6 +13,9 @@ end)
 
 当前支持这些方法。
 
+- `game.ui.form.computer.UIComputerGameList.initItem`
+- `game.ui.form.main.UIMailInfo.registerTouchEvent`
+- `game.ui.form.shop.UICommonShopBuyItem.getExtraDescInfo`
 - `offline.Combat.simulate`
 - `offline.Compass.plan`
 - `offline.Conditions.check`
@@ -25,10 +28,10 @@ end)
 - `offline.Tour.planArea` 和 `planEvent`
 - `offline.TourMetrics.eventSp`
 
-安装新界面、更新脚本入口、改原生代码或替换 APK 需要按正常的安装流程处理。这里只发布针对固定 Lua 方法的补丁。每个补丁以提交 ID 校验，发布文件上限 128 KiB。
+安装新界面、修改更新客户端、修改 Android 原生代码或替换 APK 需要分发同一应用 ID、同一签名的新安装包。这里的热更新支持上述 Lua 函数，每份 Lua 源码上限 128 KiB。
 
 ## 发布范围
 
-当前这台 Windows 测试机通过 GitHub 读取补丁，并把单个 Lua 文件交给模拟器。更新链路只读取仓库根目录的 `snail-patch.lua`。仓库不存放存档、备份、日志、账号凭据或 APK。补丁运行在各自的游戏上下文中，每位玩家的进度保留在自己的设备。
+Windows 测试机从 GitHub 读取 `snail-patch.lua`。玩家手机读取 `snail-player-update.txt`，在本机验证发布签名、兼容版本和补丁校验值后加载。修复回退可用上一份可用源码重新签名发布，序号仍依次递增。
 
-给玩家分发时，首包需要包含更新客户端。后续流程是收集反馈、验证修复、发布签名补丁，再由玩家设备下载并校验兼容版本。适合热更新的补丁可在游戏运行时应用。需要替换 Android 原生内容的版本走签名一致的 APK 更新。当前仓库仍是私有维护仓，尚未向玩家公开发布下载端点或 APK。
+仓库只发布代码补丁和说明。玩家进度、备份和日志留在各自设备上，发布密钥保存在维护机。离线时可以继续使用已有补丁游玩。
