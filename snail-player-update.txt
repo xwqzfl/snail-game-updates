@@ -1,9 +1,9 @@
 SNAIL-PLAYER-UPDATE-1
 com.qiqi.supersnail.offline.selfrepair
 1
-1
-c6adf6bfdb6d33e4cc99bc21cb6c871c05d65e4695df5177925d797ddf24c47b
-3046022100d99fa0d5e7109c4c13bb422655b941448ed597f6c99b8c29405c7c61b03b96f6022100863fa60f6000896c5e52e40a7d8f1473878e8b997af1bd4ceadf8b9cd63d2eaf
+2
+cfcb7d912b1c5c3962347bdc1006c262649c4c6be94fea48fd0c0289c732d658
+3046022100a295935af389676bdc3479b5db2f3f08cf0dd35cd37f6acdb08e4f849304c4990221009eba9d7598817b6f9ef07972cc1ca2ef770f95906fb56d09be2af0a72790110d
 -- Keep the game list usable while the new installation control is rebuilt.
 local initItem = original("game.ui.form.computer.UIComputerGameList", "initItem")
 replace("game.ui.form.computer.UIComputerGameList", "initItem", function(...)
@@ -13,3 +13,11 @@ replace("game.ui.form.computer.UIComputerGameList", "initItem", function(...)
         error(result, 0)
     end
 end)
+
+-- A signed release displays only the activity navigation IDs listed here.
+if supports and supports("offline.ActivityVisibility", "selection") then
+    local activityIds = {}
+    replace("offline.ActivityVisibility", "selection", function()
+        return activityIds
+    end)
+end

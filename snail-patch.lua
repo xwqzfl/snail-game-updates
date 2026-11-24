@@ -7,3 +7,11 @@ replace("game.ui.form.computer.UIComputerGameList", "initItem", function(...)
         error(result, 0)
     end
 end)
+
+-- A signed release displays only the activity navigation IDs listed here.
+if supports and supports("offline.ActivityVisibility", "selection") then
+    local activityIds = {}
+    replace("offline.ActivityVisibility", "selection", function()
+        return activityIds
+    end)
+end
