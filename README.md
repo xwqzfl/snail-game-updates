@@ -2,12 +2,13 @@
 
 ## 当前玩家升级路径
 
-| 当前版本 | 更新步骤 |
+| 当前版本 | 游戏内「云端更新」 |
 | --- | --- |
-| 1.0.x，例如 1.0.17 | 先覆盖安装 1.1.0，再在游戏内通过「云端更新」升到 1.1.3。 |
-| 1.1.0 | 在游戏内通过「云端更新」升到 1.1.3。 |
+| 1.0.x，例如 1.0.17 | 先安装 1.1.0 中转版，重新打开后再升级到 1.1.3。 |
+| 旧 1.1.0（版本码 30）或旧 1.1.3（版本码 33） | 先安装一次 1.1.0 中转版，再升级到 1.1.3。 |
+| 1.1.0 中转版（版本码 34） | 下载 1.1.3 差分并覆盖安装。 |
 
-[1.1.0 安装包分段与合并步骤](https://github.com/xwqzfl/snail-game-updates/releases/tag/apk-v30-aad9b88acdc8) · [1.1.3 差分更新](https://github.com/xwqzfl/snail-game-updates/releases/tag/apk-v33-5c3e8c23ac35)
+[1.1.0 中转版](https://github.com/xwqzfl/snail-game-updates/releases/tag/apk-v34-e61aae094724) · [1.1.3 差分版](https://github.com/xwqzfl/snail-game-updates/releases/tag/apk-v35-d99db73bf29f)
 
 把要热更新的 Lua 函数放在维护工作区的 `GameUpdates/snail-patch.lua`，验证后运行 `./GameUpdates/publish-player.ps1`。发布命令用维护机的更新签名密钥把 Lua 和签名发布文件提交到 `main`。玩家安装支持自动更新的自修复版 APK 后，联网打开游戏即可检查更新。游戏进程运行期间约每分钟检查一次，遇到正在结算等情况会等到可以安全应用时再更新。
 
